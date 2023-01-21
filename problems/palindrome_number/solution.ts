@@ -1,4 +1,3 @@
-
 function isPalindrome(x: number): boolean {
     let itself = x;
     let reversed = 0;
