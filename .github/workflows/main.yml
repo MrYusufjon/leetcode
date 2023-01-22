@@ -37,8 +37,8 @@ jobs:
         done
     - name: Commit and Push
       run: |
+        git add .
         git config --global user.email $EMAIL
         git config --global user.name $USER
-        git add .
         git commit -m 'Sync LeetCode Submissions'
         git push
