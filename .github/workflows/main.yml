@@ -20,8 +20,14 @@ jobs:
       env:
         LEETCODE_USERNAME: ${{ secrets.LEETCODE_USERNAME }}
         LEETCODE_PASSWORD: ${{ secrets.LEETCODE_PASSWORD }}
+        NAME: ${{ secrets.NAME }}
+        EMAIL: ${{ secrets.EMAIL }}
+        URL: ${{ secrets.URL }}
       run: |
         leetcode user -l $LEETCODE_USERNAME $LEETCODE_PASSWORD
         leetcode list -q "[easy,medium,hard]" -gx -o python > leetcode-problems.md
+        git config --global user.email $EMAIL
+        git config --global user.name $USER
         git add leetcode-problems.md
         git commit -m "Sync LeetCode solutions"
+        git push $URL
