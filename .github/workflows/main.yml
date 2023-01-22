@@ -36,6 +36,8 @@ jobs:
         done
     - name: Commit and Push
       run: |
+        git config --global user.email "yusufjon07nazarov@gmail.com"
+        git config --global user.name "MrYusufjon"
         export GITHUB_TOKEN=$TOKEN
         git add .
         git commit -m 'Sync LeetCode Submissions'
