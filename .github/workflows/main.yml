@@ -4,42 +4,15 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '*/5 * * * *'
-  
+    
 jobs:
   sync:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-    - name: Setup Node.js 16
-      uses: actions/setup-node@v2
-      with:
-        node-version: 16
-    - name: Install CLI
-      run: npm install -g leetcode-cli
-    - name: Login Leetcode
-      env:
-        LEETCODE_USERNAME: ${{ secrets.LEETCODE_USERNAME }}
-        LEETCODE_PASSWORD: ${{ secrets.LEETCODE_PASSWORD }}
-        TOKEN: ${{ secrets.TOKEN }}
-        URL: ${{ secrets.URL }}
-      run: leetcode user -l $LEETCODE_USERNAME -p $LEETCODE_PASSWORD
-    - name: Fetch Submissions
-      run: leetcode submission -q -o json --all > submissions.json
-    - name: Extract and Save Submissions
-      run: |
-        submissions=`cat submissions.json`
-        for submission in $(echo $submissions | jq -r '.[]'); do
-          pid=`echo $submission | jq -r '.problem_id'`
-          code=`echo $submission | jq -r '.code'`
-          filename=`leetcode show -q -g $pid | jq -r '.question.titleSlug'`.py
-          echo $code > $filename
-        done
-    - name: Commit and Push
-      run: |
-        git config --global user.email "yusufjon07nazarov@gmail.com"
-        git config --global user.name "MrYusufjon"
-        export GITHUB_TOKEN=$TOKEN
-        git add .
-        git commit -m 'Sync LeetCode Submissions'
-        git push $URL
+      - name: Sync
+        uses: joshcai/leetcode-sync@v1.5
+        with:
+          github-token: ${{ secrets.TOKEN }}
+          leetcode-csrf-token: ${{ secrets.LEETCODE_CSRF_TOKEN }}
+          leetcode-session: ${{ secrets.LEETCODE_SESSION }}
