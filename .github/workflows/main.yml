@@ -8,8 +8,6 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    branches:
-      - main
 
     steps:
     - name: Checkout code
