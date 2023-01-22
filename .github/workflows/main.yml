@@ -21,8 +21,7 @@ jobs:
       env:
         LEETCODE_USERNAME: ${{ secrets.LEETCODE_USERNAME }}
         LEETCODE_PASSWORD: ${{ secrets.LEETCODE_PASSWORD }}
-        EMAIL: ${{ secrets.EMAIL }}
-        USER: ${{ secrets.USER }}
+        TOKEN: ${{ secrets.TOKEN }}
       run: leetcode user -l $LEETCODE_USERNAME -p $LEETCODE_PASSWORD
     - name: Fetch Submissions
       run: leetcode submission -q -o json --all > submissions.json
@@ -37,8 +36,7 @@ jobs:
         done
     - name: Commit and Push
       run: |
+        export GITHUB_TOKEN=$TOKEN
         git add .
-        git config --global user.email $EMAIL
-        git config --global user.name $USER
         git commit -m 'Sync LeetCode Submissions'
         git push
